@@ -6,6 +6,48 @@ const dialog = document.querySelector("dialog");
 const formBook = document.querySelector("#formBook");
 const deleteAllButton = document.createElement("button");
 
+class Book {
+  constructor(title, author, pages, read) {
+    this.id = crypto.randomUUID();
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read ? "Readed" : "Unread";
+  }
+
+  set title(value) {
+    this._title = value;
+  }
+
+  set author(value) {
+    this._author = value;
+  }
+
+  set pages(value) {
+    this._pages = value;
+  }
+
+  set read(value) {
+    this._read = value;
+  }
+
+  get read() {
+    return this._read;
+  }
+
+  readBook(obj) {
+    const bookId = obj.id;
+    const targetBook = myLibrary.indexOf(
+      myLibrary.find((item) => item.id === bookId)
+    );
+    myLibrary[targetBook].read =
+      myLibrary[targetBook].read === "Readed" ? "Unread" : "Readed";
+    localStorage.setItem("books", JSON.stringify(myLibrary));
+    console.log("clicked");
+    showBookOnTable();
+  }
+}
+
 const myLibrary =
   localStorage.getItem("books") !== null
     ? JSON.parse(localStorage.getItem("books")).map((book) =>
@@ -13,24 +55,26 @@ const myLibrary =
       )
     : [];
 
-function Book(title, author, pages, read) {
-  this.id = crypto.randomUUID();
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read ? "Readed" : "Unread";
-}
+    
+// object constructor function
+// function Book(title, author, pages, read) {
+//   this.id = crypto.randomUUID();
+//   this.title = title;
+//   this.author = author;
+//   this.pages = pages;
+//   this.read = read ? "Readed" : "Unread";
+// }
 
-Book.prototype.readBook = function (obj) {
-  const bookId = obj.id;
-  const targetBook = myLibrary.indexOf(
-    myLibrary.find((item) => item.id === bookId)
-  );
-  myLibrary[targetBook].read =
-    myLibrary[targetBook].read === "Readed" ? "Unread" : "Readed";
-  localStorage.setItem("books", JSON.stringify(myLibrary));
-  showBookOnTable();
-};
+// Book.prototype.readBook = function (obj) {
+//   const bookId = obj.id;
+//   const targetBook = myLibrary.indexOf(
+//     myLibrary.find((item) => item.id === bookId)
+//   );
+//   myLibrary[targetBook].read =
+//     myLibrary[targetBook].read === "Readed" ? "Unread" : "Readed";
+//   localStorage.setItem("books", JSON.stringify(myLibrary));
+//   showBookOnTable();
+// };
 
 showDialog.addEventListener("click", () => {
   dialog.showModal();
